@@ -1,0 +1,65 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int         @id @default(autoincrement())
+  username      String      @unique
+  email         String      @unique
+  password      String
+  snapsSent     Snap[]      @relation("SnapSender")
+  snapsReceived Snap[]      @relation("SnapReceiver")
+  stories       Story[]
+  spotlights    Spotlight[]
+  chatsSent     Chat[]      @relation("ChatsSent")
+  chatsReceived Chat[]      @relation("ChatsReceived")
+}
+
+model Snap {
+  id         Int      @id @default(autoincrement())
+  mediaUrl   String
+  senderId   Int
+  receiverId Int
+  createdAt  DateTime @default(now())
+  sender     User     @relation("SnapSender", fields: [senderId], references: [id])
+  receiver   User     @relation("SnapReceiver", fields: [receiverId], references: [id])
+}
+
+model Story {
+  id        Int      @id @default(autoincrement())
+  mediaUrl  String
+  userId    Int
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Spotlight {
+  id        Int      @id @default(autoincrement())
+  mediaUrl  String
+  userId    Int
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+}
+
+model Chat {
+  id         Int      @id @default(autoincrement())
+  senderId   Int
+  receiverId Int
+  message    String
+  createdAt  DateTime @default(now())
+  sender     User     @relation("ChatsSent", fields: [senderId], references: [id])
+  receiver   User     @relation("ChatsReceived", fields: [receiverId], references: [id])
+}
