@@ -20,4 +20,15 @@ app.use('/uploads/videos', express.static(path.join(__dirname, '../uploads/video
 
 app.get('/', (req, res) => res.send('Backend is running!'));
 
+// Example route for demonstration (can be removed if not needed)
+app.post('/api/login', (req, res) => {
+  const { username, password } = req.body;
+  // Dummy check
+  if (username === 'test' && password === 'test') {
+    res.json({ message: 'Login successful' });
+  } else {
+    res.status(401).json({ message: 'Invalid credentials' });
+  }
+});
+
 module.exports = app;
