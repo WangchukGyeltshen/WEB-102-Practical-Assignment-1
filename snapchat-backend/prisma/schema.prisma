@@ -17,7 +17,7 @@ datasource db {
 model User {
   id             Int      @id @default(autoincrement())
   username       String   @unique
-  email          String   @unique
+  email          String?  // made optional, removed @unique
   password       String
   snapsSent      Snap[]   @relation("SnapSender")
   snapsReceived  Snap[]   @relation("SnapReceiver")

@@ -1470,7 +1470,7 @@ export namespace Prisma {
   export type UserGroupByOutputType = {
     id: number
     username: string
-    email: string
+    email: string | null
     password: string
     _count: UserCountAggregateOutputType | null
     _avg: UserAvgAggregateOutputType | null
@@ -1554,7 +1554,7 @@ export namespace Prisma {
     scalars: $Extensions.GetPayloadResult<{
       id: number
       username: string
-      email: string
+      email: string | null
       password: string
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -7017,6 +7017,14 @@ export namespace Prisma {
   export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
 
 
+  export const NullsOrder: {
+    first: 'first',
+    last: 'last'
+  };
+
+  export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
+
+
   /**
    * Field references
    */
@@ -7087,7 +7095,7 @@ export namespace Prisma {
     NOT?: UserWhereInput | UserWhereInput[]
     id?: IntFilter<"User"> | number
     username?: StringFilter<"User"> | string
-    email?: StringFilter<"User"> | string
+    email?: StringNullableFilter<"User"> | string | null
     password?: StringFilter<"User"> | string
     snapsSent?: SnapListRelationFilter
     snapsReceived?: SnapListRelationFilter
@@ -7100,7 +7108,7 @@ export namespace Prisma {
   export type UserOrderByWithRelationInput = {
     id?: SortOrder
     username?: SortOrder
-    email?: SortOrder
+    email?: SortOrderInput | SortOrder
     password?: SortOrder
     snapsSent?: SnapOrderByRelationAggregateInput
     snapsReceived?: SnapOrderByRelationAggregateInput
@@ -7113,10 +7121,10 @@ export namespace Prisma {
   export type UserWhereUniqueInput = Prisma.AtLeast<{
     id?: number
     username?: string
-    email?: string
     AND?: UserWhereInput | UserWhereInput[]
     OR?: UserWhereInput[]
     NOT?: UserWhereInput | UserWhereInput[]
+    email?: StringNullableFilter<"User"> | string | null
     password?: StringFilter<"User"> | string
     snapsSent?: SnapListRelationFilter
     snapsReceived?: SnapListRelationFilter
@@ -7124,12 +7132,12 @@ export namespace Prisma {
     spotlights?: SpotlightListRelationFilter
     chatsSent?: ChatListRelationFilter
     chatsReceived?: ChatListRelationFilter
-  }, "id" | "username" | "email">
+  }, "id" | "username">
 
   export type UserOrderByWithAggregationInput = {
     id?: SortOrder
     username?: SortOrder
-    email?: SortOrder
+    email?: SortOrderInput | SortOrder
     password?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _avg?: UserAvgOrderByAggregateInput
@@ -7144,7 +7152,7 @@ export namespace Prisma {
     NOT?: UserScalarWhereWithAggregatesInput | UserScalarWhereWithAggregatesInput[]
     id?: IntWithAggregatesFilter<"User"> | number
     username?: StringWithAggregatesFilter<"User"> | string
-    email?: StringWithAggregatesFilter<"User"> | string
+    email?: StringNullableWithAggregatesFilter<"User"> | string | null
     password?: StringWithAggregatesFilter<"User"> | string
   }
 
@@ -7379,7 +7387,7 @@ export namespace Prisma {
 
   export type UserCreateInput = {
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsSent?: SnapCreateNestedManyWithoutSenderInput
     snapsReceived?: SnapCreateNestedManyWithoutReceiverInput
@@ -7392,7 +7400,7 @@ export namespace Prisma {
   export type UserUncheckedCreateInput = {
     id?: number
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsSent?: SnapUncheckedCreateNestedManyWithoutSenderInput
     snapsReceived?: SnapUncheckedCreateNestedManyWithoutReceiverInput
@@ -7404,7 +7412,7 @@ export namespace Prisma {
 
   export type UserUpdateInput = {
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsSent?: SnapUpdateManyWithoutSenderNestedInput
     snapsReceived?: SnapUpdateManyWithoutReceiverNestedInput
@@ -7417,7 +7425,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateInput = {
     id?: IntFieldUpdateOperationsInput | number
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsSent?: SnapUncheckedUpdateManyWithoutSenderNestedInput
     snapsReceived?: SnapUncheckedUpdateManyWithoutReceiverNestedInput
@@ -7430,20 +7438,20 @@ export namespace Prisma {
   export type UserCreateManyInput = {
     id?: number
     username: string
-    email: string
+    email?: string | null
     password: string
   }
 
   export type UserUpdateManyMutationInput = {
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
   }
 
   export type UserUncheckedUpdateManyInput = {
     id?: IntFieldUpdateOperationsInput | number
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
   }
 
@@ -7672,6 +7680,21 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type SnapListRelationFilter = {
     every?: SnapWhereInput
     some?: SnapWhereInput
@@ -7694,6 +7717,11 @@ export namespace Prisma {
     every?: ChatWhereInput
     some?: ChatWhereInput
     none?: ChatWhereInput
+  }
+
+  export type SortOrderInput = {
+    sort: SortOrder
+    nulls?: NullsOrder
   }
 
   export type SnapOrderByRelationAggregateInput = {
@@ -7773,6 +7801,24 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type DateTimeFilter<$PrismaModel = never> = {
@@ -8028,6 +8074,10 @@ export namespace Prisma {
 
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type SnapUpdateManyWithoutSenderNestedInput = {
@@ -8319,6 +8369,20 @@ export namespace Prisma {
     not?: NestedStringFilter<$PrismaModel> | string
   }
 
+  export type NestedStringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  }
+
   export type NestedIntWithAggregatesFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel>
     in?: number[] | ListIntFieldRefInput<$PrismaModel>
@@ -8361,6 +8425,34 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedStringFilter<$PrismaModel>
     _max?: NestedStringFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
+  }
+
+  export type NestedIntNullableFilter<$PrismaModel = never> = {
+    equals?: number | IntFieldRefInput<$PrismaModel> | null
+    in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    notIn?: number[] | ListIntFieldRefInput<$PrismaModel> | null
+    lt?: number | IntFieldRefInput<$PrismaModel>
+    lte?: number | IntFieldRefInput<$PrismaModel>
+    gt?: number | IntFieldRefInput<$PrismaModel>
+    gte?: number | IntFieldRefInput<$PrismaModel>
+    not?: NestedIntNullableFilter<$PrismaModel> | number | null
   }
 
   export type NestedDateTimeFilter<$PrismaModel = never> = {
@@ -8665,7 +8757,7 @@ export namespace Prisma {
 
   export type UserCreateWithoutSnapsSentInput = {
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsReceived?: SnapCreateNestedManyWithoutReceiverInput
     stories?: StoryCreateNestedManyWithoutUserInput
@@ -8677,7 +8769,7 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutSnapsSentInput = {
     id?: number
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsReceived?: SnapUncheckedCreateNestedManyWithoutReceiverInput
     stories?: StoryUncheckedCreateNestedManyWithoutUserInput
@@ -8693,7 +8785,7 @@ export namespace Prisma {
 
   export type UserCreateWithoutSnapsReceivedInput = {
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsSent?: SnapCreateNestedManyWithoutSenderInput
     stories?: StoryCreateNestedManyWithoutUserInput
@@ -8705,7 +8797,7 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutSnapsReceivedInput = {
     id?: number
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsSent?: SnapUncheckedCreateNestedManyWithoutSenderInput
     stories?: StoryUncheckedCreateNestedManyWithoutUserInput
@@ -8732,7 +8824,7 @@ export namespace Prisma {
 
   export type UserUpdateWithoutSnapsSentInput = {
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsReceived?: SnapUpdateManyWithoutReceiverNestedInput
     stories?: StoryUpdateManyWithoutUserNestedInput
@@ -8744,7 +8836,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutSnapsSentInput = {
     id?: IntFieldUpdateOperationsInput | number
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsReceived?: SnapUncheckedUpdateManyWithoutReceiverNestedInput
     stories?: StoryUncheckedUpdateManyWithoutUserNestedInput
@@ -8766,7 +8858,7 @@ export namespace Prisma {
 
   export type UserUpdateWithoutSnapsReceivedInput = {
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsSent?: SnapUpdateManyWithoutSenderNestedInput
     stories?: StoryUpdateManyWithoutUserNestedInput
@@ -8778,7 +8870,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutSnapsReceivedInput = {
     id?: IntFieldUpdateOperationsInput | number
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsSent?: SnapUncheckedUpdateManyWithoutSenderNestedInput
     stories?: StoryUncheckedUpdateManyWithoutUserNestedInput
@@ -8789,7 +8881,7 @@ export namespace Prisma {
 
   export type UserCreateWithoutStoriesInput = {
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsSent?: SnapCreateNestedManyWithoutSenderInput
     snapsReceived?: SnapCreateNestedManyWithoutReceiverInput
@@ -8801,7 +8893,7 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutStoriesInput = {
     id?: number
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsSent?: SnapUncheckedCreateNestedManyWithoutSenderInput
     snapsReceived?: SnapUncheckedCreateNestedManyWithoutReceiverInput
@@ -8828,7 +8920,7 @@ export namespace Prisma {
 
   export type UserUpdateWithoutStoriesInput = {
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsSent?: SnapUpdateManyWithoutSenderNestedInput
     snapsReceived?: SnapUpdateManyWithoutReceiverNestedInput
@@ -8840,7 +8932,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutStoriesInput = {
     id?: IntFieldUpdateOperationsInput | number
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsSent?: SnapUncheckedUpdateManyWithoutSenderNestedInput
     snapsReceived?: SnapUncheckedUpdateManyWithoutReceiverNestedInput
@@ -8851,7 +8943,7 @@ export namespace Prisma {
 
   export type UserCreateWithoutSpotlightsInput = {
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsSent?: SnapCreateNestedManyWithoutSenderInput
     snapsReceived?: SnapCreateNestedManyWithoutReceiverInput
@@ -8863,7 +8955,7 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutSpotlightsInput = {
     id?: number
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsSent?: SnapUncheckedCreateNestedManyWithoutSenderInput
     snapsReceived?: SnapUncheckedCreateNestedManyWithoutReceiverInput
@@ -8890,7 +8982,7 @@ export namespace Prisma {
 
   export type UserUpdateWithoutSpotlightsInput = {
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsSent?: SnapUpdateManyWithoutSenderNestedInput
     snapsReceived?: SnapUpdateManyWithoutReceiverNestedInput
@@ -8902,7 +8994,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutSpotlightsInput = {
     id?: IntFieldUpdateOperationsInput | number
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsSent?: SnapUncheckedUpdateManyWithoutSenderNestedInput
     snapsReceived?: SnapUncheckedUpdateManyWithoutReceiverNestedInput
@@ -8913,7 +9005,7 @@ export namespace Prisma {
 
   export type UserCreateWithoutChatsSentInput = {
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsSent?: SnapCreateNestedManyWithoutSenderInput
     snapsReceived?: SnapCreateNestedManyWithoutReceiverInput
@@ -8925,7 +9017,7 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutChatsSentInput = {
     id?: number
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsSent?: SnapUncheckedCreateNestedManyWithoutSenderInput
     snapsReceived?: SnapUncheckedCreateNestedManyWithoutReceiverInput
@@ -8941,7 +9033,7 @@ export namespace Prisma {
 
   export type UserCreateWithoutChatsReceivedInput = {
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsSent?: SnapCreateNestedManyWithoutSenderInput
     snapsReceived?: SnapCreateNestedManyWithoutReceiverInput
@@ -8953,7 +9045,7 @@ export namespace Prisma {
   export type UserUncheckedCreateWithoutChatsReceivedInput = {
     id?: number
     username: string
-    email: string
+    email?: string | null
     password: string
     snapsSent?: SnapUncheckedCreateNestedManyWithoutSenderInput
     snapsReceived?: SnapUncheckedCreateNestedManyWithoutReceiverInput
@@ -8980,7 +9072,7 @@ export namespace Prisma {
 
   export type UserUpdateWithoutChatsSentInput = {
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsSent?: SnapUpdateManyWithoutSenderNestedInput
     snapsReceived?: SnapUpdateManyWithoutReceiverNestedInput
@@ -8992,7 +9084,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutChatsSentInput = {
     id?: IntFieldUpdateOperationsInput | number
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsSent?: SnapUncheckedUpdateManyWithoutSenderNestedInput
     snapsReceived?: SnapUncheckedUpdateManyWithoutReceiverNestedInput
@@ -9014,7 +9106,7 @@ export namespace Prisma {
 
   export type UserUpdateWithoutChatsReceivedInput = {
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsSent?: SnapUpdateManyWithoutSenderNestedInput
     snapsReceived?: SnapUpdateManyWithoutReceiverNestedInput
@@ -9026,7 +9118,7 @@ export namespace Prisma {
   export type UserUncheckedUpdateWithoutChatsReceivedInput = {
     id?: IntFieldUpdateOperationsInput | number
     username?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
     password?: StringFieldUpdateOperationsInput | string
     snapsSent?: SnapUncheckedUpdateManyWithoutSenderNestedInput
     snapsReceived?: SnapUncheckedUpdateManyWithoutReceiverNestedInput
