@@ -20,8 +20,34 @@ exports.getStories = async (req, res) => {
     const stories = await prisma.story.findMany({
       where: { userId: Number(userId), expiresAt: { gt: new Date() } }
     });
-    res.json(stories);
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const storiesWithUrl = stories.map(s => ({
+      ...s,
+      mediaUrl: s.mediaUrl.startsWith('http')
+        ? s.mediaUrl
+        : baseUrl + s.mediaUrl
+    }));
+    res.json(storiesWithUrl);
   } catch (err) {
     res.status(400).json({ error: 'Could not fetch stories' });
+  }
+};
+
+exports.uploadStoryVideo = async (req, res) => {
+  if (!req.file) return res.status(400).json({ error: 'No video file uploaded' });
+  const userId = req.user.userId;
+  const mediaUrl = `/uploads/videos/${req.file.filename}`;
+  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000);
+  try {
+    const story = await prisma.story.create({
+      data: { userId, mediaUrl, expiresAt }
+    });
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    res.json({
+      ...story,
+      mediaUrl: baseUrl + story.mediaUrl
+    });
+  } catch (err) {
+    res.status(400).json({ error: 'Could not upload story video' });
   }
 };

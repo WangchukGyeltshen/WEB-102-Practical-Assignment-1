@@ -2,6 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const prisma = require('../prismaClient');
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret';
+console.log('JWT_SECRET used for signing:', JWT_SECRET);
 
 exports.signup = async (req, res) => {
   const { username, password, email } = req.body;
@@ -46,5 +47,5 @@ exports.login = async (req, res) => {
   console.log('Password valid:', valid);
   if (!valid) return res.status(401).json({ message: 'Invalid credentials' });
   const token = jwt.sign({ userId: user.id }, JWT_SECRET, { expiresIn: '1d' });
-  res.json({ message: 'Login successful', token });
+  res.json({ message: 'Login successful', token, user: { id: user.id, username: user.username, email: user.email } });
 };
