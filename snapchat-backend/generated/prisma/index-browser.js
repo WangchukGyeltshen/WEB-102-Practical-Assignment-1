@@ -158,6 +158,21 @@ exports.Prisma.ChatScalarFieldEnum = {
   createdAt: 'createdAt'
 };
 
+exports.Prisma.FriendRequestScalarFieldEnum = {
+  id: 'id',
+  fromUserId: 'fromUserId',
+  toUserId: 'toUserId',
+  status: 'status',
+  createdAt: 'createdAt'
+};
+
+exports.Prisma.FriendshipScalarFieldEnum = {
+  id: 'id',
+  friendAId: 'friendAId',
+  friendBId: 'friendBId',
+  createdAt: 'createdAt'
+};
+
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -179,7 +194,9 @@ exports.Prisma.ModelName = {
   Snap: 'Snap',
   Story: 'Story',
   Spotlight: 'Spotlight',
-  Chat: 'Chat'
+  Chat: 'Chat',
+  FriendRequest: 'FriendRequest',
+  Friendship: 'Friendship'
 };
 
 /**

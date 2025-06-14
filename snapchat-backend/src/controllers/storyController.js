@@ -51,3 +51,22 @@ exports.uploadStoryVideo = async (req, res) => {
     res.status(400).json({ error: 'Could not upload story video' });
   }
 };
+
+exports.getPublicStories = async (req, res) => {
+  try {
+    const stories = await prisma.story.findMany({
+      where: { expiresAt: { gt: new Date() } },
+      orderBy: { createdAt: 'desc' }
+    });
+    const baseUrl = `${req.protocol}://${req.get('host')}`;
+    const storiesWithUrl = stories.map(s => ({
+      ...s,
+      mediaUrl: s.mediaUrl.startsWith('http')
+        ? s.mediaUrl
+        : baseUrl + s.mediaUrl
+    }));
+    res.json(storiesWithUrl);
+  } catch (err) {
+    res.status(400).json({ error: 'Could not fetch public stories' });
+  }
+};

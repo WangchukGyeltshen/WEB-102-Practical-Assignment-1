@@ -21,10 +21,17 @@ const fileFilter = (req, file, cb) => {
 };
 const upload = multer({ storage, fileFilter });
 
+// Add this public stories route BEFORE any route with /:userId
+router.get('/public', (req, res) => {
+  // Use the controller method as a function
+  storyController.getPublicStories(req, res);
+});
+
+// Move this route above /:userId to avoid route conflict
+router.post('/upload', authenticateToken, upload.single('video'), storyController.uploadStoryVideo);
+
+// Existing routes
 router.post('/', authenticateToken, storyController.postStory);
 router.get('/:userId', authenticateToken, storyController.getStories);
-
-// New: Upload video for story
-router.post('/upload', authenticateToken, upload.single('video'), storyController.uploadStoryVideo);
 
 module.exports = router;
