@@ -17,7 +17,7 @@ datasource db {
 model User {
   id             Int      @id @default(autoincrement())
   username       String   @unique
-  email          String   @unique
+  email          String?  // made optional, removed @unique
   password       String
   snapsSent      Snap[]   @relation("SnapSender")
   snapsReceived  Snap[]   @relation("SnapReceiver")
@@ -25,6 +25,10 @@ model User {
   spotlights     Spotlight[]
   chatsSent      Chat[]   @relation("ChatsSent")
   chatsReceived  Chat[]   @relation("ChatsReceived")
+  friendRequestsSent     FriendRequest[] @relation("RequestsSent")
+  friendRequestsReceived FriendRequest[] @relation("RequestsReceived")
+  friendshipsA           Friendship[]   @relation("FriendA")
+  friendshipsB           Friendship[]   @relation("FriendB")
 }
 
 model Snap {
@@ -62,4 +66,23 @@ model Chat {
   createdAt  DateTime @default(now())
   sender     User     @relation("ChatsSent", fields: [senderId], references: [id])
   receiver   User     @relation("ChatsReceived", fields: [receiverId], references: [id])
+}
+
+model FriendRequest {
+  id         Int      @id @default(autoincrement())
+  fromUser   User     @relation("RequestsSent", fields: [fromUserId], references: [id])
+  fromUserId Int
+  toUser     User     @relation("RequestsReceived", fields: [toUserId], references: [id])
+  toUserId   Int
+  status     String   @default("pending") // pending, accepted, rejected
+  createdAt  DateTime @default(now())
+}
+
+model Friendship {
+  id      Int   @id @default(autoincrement())
+  friendA User  @relation("FriendA", fields: [friendAId], references: [id])
+  friendAId Int
+  friendB User  @relation("FriendB", fields: [friendBId], references: [id])
+  friendBId Int
+  createdAt DateTime @default(now())
 }
